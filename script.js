@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${product.thumbnail}" alt="${product.title}">
                 <p>${product.title}</p>
                 <p>Price: $${product.price}</p>
-                <p>Discount: ${product.discount}%</p>
+                <p>Discount: ${product.discountPercentage}%</p>
                 <p>Category: ${product.category}</p>
                 <p>Stock: ${product.stock}</p>
             `;
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productInfoContent.innerHTML = `
             <h2>${product.title}</h2>
             <p>Price: $${product.price}</p>
-            <p>Discount: ${product.discount}%</p>
+            <p>Discount: ${product.discountPercentage}%</p>
             <p>Category: ${product.category}</p>
             <p>Stock: ${product.stock}</p>
             <!-- Add additional information as needed -->
