@@ -1,25 +1,32 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: rgba(11, 89, 53, 0.701);
 }
 
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 40px;
+    background-color: #fdfafa;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure contents don't overflow */
+}
+
+
+h1{
+  color:#5f5d5d;
 }
 
 label {
     margin-right: 10px;
+    padding-inline: 5px;
 }
 
 input, select {
-    margin-bottom: 10px;
-    padding: 5px;
+    margin-bottom: 20px;
+    padding: 8px;
 }
 
 .products-container {
@@ -42,7 +49,7 @@ input, select {
 
 .product img {
     max-width: 100%;
-    height: auto;
+    height: 150px;
 }
 
 .modal {
@@ -52,7 +59,7 @@ input, select {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(0, 0, 0);
     justify-content: center;
     align-items: center;
 }
@@ -61,4 +68,49 @@ input, select {
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust the width as needed */
+    max-width: 600px; /* Set a maximum width for larger screens */
+    margin: 0 auto; /* Center the modal horizontally */
+}
+
+#close-modal {
+    margin-top: 10px;
+    margin-left: auto !important;
+    display: block;
+    align-self: flex-end !important;
+}
+
+
+
+.product-info {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px; /* Adjust as needed */
+}
+
+.product-details {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.gallery-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: 150px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    object-fit: cover; /* Maintain aspect ratio */
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.gallery-image:hover {
+    transform: scale(1.1);
 }
