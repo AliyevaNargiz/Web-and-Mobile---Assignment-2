@@ -5,15 +5,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const paginationContainer = document.getElementById('pagination');
     const productInfoModal = document.getElementById('product-info-modal');
     const productInfoContent = document.getElementById('product-info-content');
-
-    let products = [];
+    searchInput.addEventListener('input', filterAndPaginate);
+    categorySelect.addEventListener('change', filterAndPaginate);
 
     const apiUrl = 'https://dummyjson.com/products';
+
+    const productsPerPage = 10;
+    let currentPage = 1;
+    let products = [];
+
+
+
+    function displayProductsPage(products) {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToShow = products.slice(startIndex, endIndex);
+        displayProducts(productsToShow);
+    }
+
+
+
+    function updatePagination(products) {
+        const totalPages = Math.ceil(products.length / productsPerPage);
+
+    let paginationHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button>${i}</button>`;
+    }
+
+    paginationContainer.innerHTML = paginationHTML;
+
+    const paginationButtons = paginationContainer.querySelectorAll('button');
+    paginationButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            currentPage = index + 1;
+            displayProductsPage(products);
+        });
+    });
+    }
+    
+searchInput.addEventListener('input', () => {
+    filterProducts();
+});
+
+categorySelect.addEventListener('change', () => {
+    filterProducts();
+});
+    
+    function filterAndPaginate() {
+        filterProducts();
+        updatePagination(products);
+        displayProductsPage(products);
+    }
+
 
     async function fetchData() {
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
+            console.log('Fetched Data:', data);
             products = data.products;
             return data.products;
         } catch (error) {
@@ -27,9 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const productDiv = document.createElement('div');
             productDiv.className = 'product';
             productDiv.innerHTML = `
-                <img src="${product.thumbnail}" alt="${product.title}">
+                <img src="${product.thumbnail}" alt="${product.title}" class="product-image">
                 <p>${product.title}</p>
-                <p>Price: $${product.price}</p>
+                <p>Price: ${product.price}</p>
                 <p>Discount: ${product.discountPercentage}%</p>
                 <p>Category: ${product.category}</p>
                 <p>Stock: ${product.stock}</p>
@@ -53,6 +103,8 @@ function displayProductInfo(product) {
                 <p>Price: $${product.price}</p>
                 <p>Discount: ${product.discountPercentage}%</p>
                 <p>Category: ${product.category}</p>
+                <p>Brand: ${product.brand}</p>
+                <p>Rating: ${product.rating}</p>
                 <p>Stock: ${product.stock}</p>
                 <h3>Description:</h3>
                 <p>${product.description}</p>
@@ -87,21 +139,23 @@ function openFullSizeImage(imageUrl) {
     window.open(imageUrl, '_blank');
 }
 
+    
+function filterProducts() {
+    const keyword = searchInput.value.toLowerCase().trim();
+    const selectedCategory = categorySelect.value.toLowerCase().trim();
+
+    const filteredProducts = products.filter(product =>
+        (keyword === '' || product.title.toLowerCase().includes(keyword) || product.category.toLowerCase().includes(keyword)) &&
+        (selectedCategory === '' || product.category.toLowerCase() === selectedCategory)
+    );
+
+    currentPage = 1; // Reset to the first page when applying new filters
+    displayProductsPage(filteredProducts);
+    updatePagination(filteredProducts);
+}
 
 
-    function filterProducts() {
-        const keyword = searchInput.value.toLowerCase();
-        const selectedCategory = categorySelect.value.toLowerCase();
-
-        const filteredProducts = products.filter(product =>
-            (product.title.toLowerCase().includes(keyword) ||
-                product.category.toLowerCase().includes(keyword)) &&
-            (selectedCategory === '' || product.category.toLowerCase() === selectedCategory)
-        );
-
-        displayProducts(filteredProducts);
-    }
-
+    
     function closeProductInfoModal() {
         productInfoModal.style.display = 'none';
     }
@@ -109,12 +163,15 @@ function openFullSizeImage(imageUrl) {
     fetchData().then(products => {
         console.log(products);
         populateCategories(products);
+        filterAndPaginate();
         displayProducts(products);
-        filterProducts(); // Filter on initial load
-        // handlePagination(products);
+        filterProducts(); 
     });
 
-    searchInput.addEventListener('input', filterProducts);
-    categorySelect.addEventListener('change', filterProducts);
+
+    
+
+    searchInput.addEventListener('input', filterAndPaginate);
+    categorySelect.addEventListener('change', filterAndPaginate);
     productInfoContent.addEventListener('click', event => event.stopPropagation());
 });
