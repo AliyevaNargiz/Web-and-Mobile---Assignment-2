@@ -1,64 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {       // Event Listener Setup
+    //DOM Element References
     const productsContainer = document.getElementById('products-container');
     const searchInput = document.getElementById('search');
     const categorySelect = document.getElementById('category');
     const paginationContainer = document.getElementById('pagination');
     const productInfoModal = document.getElementById('product-info-modal');
     const productInfoContent = document.getElementById('product-info-content');
+    //Event Listeners for Search and Category
     searchInput.addEventListener('input', filterAndPaginate);
     categorySelect.addEventListener('change', filterAndPaginate);
 
-    const apiUrl = 'https://dummyjson.com/products';
 
+
+    //Constants and Variables
+    const apiUrl = 'https://dummyjson.com/products';
     const productsPerPage = 10;
     let currentPage = 1;
     let products = [];
 
 
 
-    function displayProductsPage(products) {
-        const startIndex = (currentPage - 1) * productsPerPage;
-        const endIndex = startIndex + productsPerPage;
-        const productsToShow = products.slice(startIndex, endIndex);
-        displayProducts(productsToShow);
-    }
-
-
-
-    function updatePagination(products) {
-        const totalPages = Math.ceil(products.length / productsPerPage);
-
-    let paginationHTML = '';
-    for (let i = 1; i <= totalPages; i++) {
-        paginationHTML += `<button>${i}</button>`;
-    }
-
-    paginationContainer.innerHTML = paginationHTML;
-
-    const paginationButtons = paginationContainer.querySelectorAll('button');
-    paginationButtons.forEach((button, index) => {
-        button.addEventListener('click', () => {
-            currentPage = index + 1;
-            displayProductsPage(products);
-        });
-    });
-    }
-    
-searchInput.addEventListener('input', () => {
-    filterProducts();
-});
-
-categorySelect.addEventListener('change', () => {
-    filterProducts();
-});
-    
-    function filterAndPaginate() {
-        filterProducts();
-        updatePagination(products);
-        displayProductsPage(products);
-    }
-
-
+    //Fetch Data
     async function fetchData() {
         try {
             const response = await fetch(apiUrl);
@@ -71,6 +33,20 @@ categorySelect.addEventListener('change', () => {
         }
     }
 
+
+
+
+    //Display Products Page
+    function displayProductsPage(products) {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const productsToShow = products.slice(startIndex, endIndex);
+        displayProducts(productsToShow);
+    }
+
+
+
+        //Display Products
     function displayProducts(products) {
         productsContainer.innerHTML = '';
         products.forEach(product => {
@@ -89,12 +65,8 @@ categorySelect.addEventListener('change', () => {
         });
     }
 
-    function populateCategories(products) {
-        const categories = [...new Set(products.map(product => product.category))];
-        const optionList = categories.map(category => `<option value="${category}">${category}</option>`).join('');
-        categorySelect.innerHTML = `<option value="">All Categories</option>${optionList}`;
-    }
 
+//Display Product Info
 function displayProductInfo(product) {
     productInfoContent.innerHTML = `
         <div class="product-info">
@@ -131,15 +103,48 @@ function displayProductInfo(product) {
 }
 
 
+      //Fetch Data and Initialization
+    fetchData().then(products => {
+        console.log(products);
+        populateCategories(products);
+        filterAndPaginate();
+        displayProducts(products);
+        filterProducts(); 
+    });
+  
+    
 
-// Function to open the image in full size (replace with your implementation)
+// Open Full Size Image
 function openFullSizeImage(imageUrl) {
-    // Implement your logic to display the image in full size
-    // For simplicity, you can open the image in a new tab/window.
     window.open(imageUrl, '_blank');
 }
 
     
+    
+
+    
+    
+    
+//Search and Category Filter
+    function filterAndPaginate() {
+        filterProducts();
+        updatePagination(products);
+        displayProductsPage(products);
+    }
+
+
+
+
+ //Populate Categories
+    function populateCategories(products) {
+        const categories = [...new Set(products.map(product => product.category))];
+        const optionList = categories.map(category => `<option value="${category}">${category}</option>`).join('');
+        categorySelect.innerHTML = `<option value="">All Categories</option>${optionList}`;
+    }
+
+
+
+//Filter Products
 function filterProducts() {
     const keyword = searchInput.value.toLowerCase().trim();
     const selectedCategory = categorySelect.value.toLowerCase().trim();
@@ -153,13 +158,14 @@ function filterProducts() {
     displayProductsPage(filteredProducts);
     updatePagination(filteredProducts);
 }
-
-
     
+    //Close Product Info Modal
     function closeProductInfoModal() {
         productInfoModal.style.display = 'none';
     }
 
+
+    //Fetch Data and Initialization
     fetchData().then(products => {
         console.log(products);
         populateCategories(products);
@@ -169,6 +175,37 @@ function filterProducts() {
     });
 
 
+
+    //Update Pagination
+    function updatePagination(products) {
+        const totalPages = Math.ceil(products.length / productsPerPage);
+
+    let paginationHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button>${i}</button>`;
+    }
+
+    paginationContainer.innerHTML = paginationHTML;
+
+    const paginationButtons = paginationContainer.querySelectorAll('button');
+    paginationButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            currentPage = index + 1;
+            displayProductsPage(products);
+        });
+    });
+    }
+    
+searchInput.addEventListener('input', () => {
+    filterProducts();
+});
+
+categorySelect.addEventListener('change', () => {
+    filterProducts();
+});
+    
+    
+    
     
 
     searchInput.addEventListener('input', filterAndPaginate);
