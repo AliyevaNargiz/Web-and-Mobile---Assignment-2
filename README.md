@@ -3,6 +3,7 @@
 Welcome to Katyleest’s Shopping Center! This web page allows users to browse and search for products with ease.
 
 
+
 ## Table of Contents
 
 - [Assignmet 2 / Katyleest’s Shopping Center](#assignmet-2--katyleests-shopping-center)

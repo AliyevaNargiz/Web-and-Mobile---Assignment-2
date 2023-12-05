@@ -195,6 +195,7 @@ searchInput.addEventListener('input', () => {
     filterProducts();
 });
 
+    
 categorySelect.addEventListener('change', () => {
     filterProducts();
 });
