@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    //Variable Declarations
+//Variable Declarations
     const apiUrl = 'https://dummyjson.com/products?limit=100';
     const productsPerPage = 10;
     let currentPage = 1;
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    //Fetch Data
+//Fetch Data
 async function fetchData() {
     try {
         const response = await fetch(apiUrl);
@@ -35,8 +35,7 @@ async function fetchData() {
 }
 
 
-
-      //Fetch Data and Initialization
+//Fetch Data and Initialization
     fetchData().then(products => {
         console.log(products);
         populateCategories(products);
@@ -46,7 +45,7 @@ async function fetchData() {
     });
   
 
-    //Display Products Page
+//Display Products Page
     function displayProductsPage(products) {
         const startIndex = (currentPage - 1) * productsPerPage;
         const endIndex = startIndex + productsPerPage;
@@ -56,7 +55,7 @@ async function fetchData() {
 
 
 
-        //Display Products
+//Display Products
     function displayProducts(products) {
         productsContainer.innerHTML = '';
         products.forEach(product => {
@@ -76,7 +75,7 @@ async function fetchData() {
     }
 
 
-    
+
 //Display Product Info
 function displayProductInfo(product) {
     productInfoContent.innerHTML = `
@@ -115,13 +114,7 @@ function displayProductInfo(product) {
 
 
     
-    
-
-    
-
-
-
-// Open Full Size Image
+// Open Full-Size Image
 function openFullSizeImage(imageUrl) {
     window.open(imageUrl, '_blank');
 }
@@ -163,16 +156,16 @@ function filterProducts() {
     updatePagination(filteredProducts);
 }
     
-    //Close Product Info Modal
+    
+    
+//Close Product Info Modal
     function closeProductInfoModal() {
         productInfoModal.style.display = 'none';
     }
 
 
 
-
-
-    //Update Pagination
+//Update Pagination
 function updatePagination(products) {
     const totalPages = Math.ceil(products.length / productsPerPage);
 
@@ -194,8 +187,9 @@ function updatePagination(products) {
     });
 }
 
-
-
+    
+    
+//Additional Event Listeners
     
 searchInput.addEventListener('input', () => {
     filterProducts();
@@ -207,8 +201,6 @@ categorySelect.addEventListener('change', () => {
     
     
     
-    
-//Additional Event Listeners
     searchInput.addEventListener('input', filterAndPaginate);
     categorySelect.addEventListener('change', filterAndPaginate);
     productInfoContent.addEventListener('click', event => event.stopPropagation());

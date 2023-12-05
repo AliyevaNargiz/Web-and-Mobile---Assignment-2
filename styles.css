@@ -153,6 +153,7 @@ input, select {
     cursor: pointer;
 }
 
+
 #pagination button:hover {
     background-color: rgb(242, 8, 152);;
 }
