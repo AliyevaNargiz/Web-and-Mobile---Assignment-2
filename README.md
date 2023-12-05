@@ -2,6 +2,7 @@
 
 Welcome to Katyleest’s Shopping Center! This web application allows users to browse and search for products with ease.
 
+
 ## Table of Contents
 
 - [Katyleest’s Shopping Center](#katyleests-shopping-center)
