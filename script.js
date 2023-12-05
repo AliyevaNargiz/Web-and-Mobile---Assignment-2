@@ -205,3 +205,5 @@ categorySelect.addEventListener('change', () => {
     categorySelect.addEventListener('change', filterAndPaginate);
     productInfoContent.addEventListener('click', event => event.stopPropagation());
 });
+
+
