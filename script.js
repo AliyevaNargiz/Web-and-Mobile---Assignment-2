@@ -76,6 +76,7 @@ async function fetchData() {
     }
 
 
+    
 //Display Product Info
 function displayProductInfo(product) {
     productInfoContent.innerHTML = `

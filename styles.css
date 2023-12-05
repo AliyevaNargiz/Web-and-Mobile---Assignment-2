@@ -157,6 +157,7 @@ input, select {
     background-color: rgb(242, 8, 152);;
 }
 
+
 #pagination button.active {
     background-color: rgb(242, 8, 152);
     color: white;
