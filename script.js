@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {       // Event Listener Setup
-    //DOM Element References
+// Event Listener Setup
+document.addEventListener('DOMContentLoaded', () => {     
     const productsContainer = document.getElementById('products-container');
     const searchInput = document.getElementById('search');
     const categorySelect = document.getElementById('category');
@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {       // Event Listener Se
 
 
 
-    //Constants and Variables
-    const apiUrl = 'https://dummyjson.com/products';
+
+    //Variable Declarations
+    const apiUrl = 'https://dummyjson.com/products?limit=100';
     const productsPerPage = 10;
     let currentPage = 1;
     let products = [];
@@ -21,20 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {       // Event Listener Se
 
 
     //Fetch Data
-    async function fetchData() {
-        try {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            console.log('Fetched Data:', data);
-            products = data.products;
-            return data.products;
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
+async function fetchData() {
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        console.log('Fetched Data:', data);
+        products = data.products;
+        return data.products;
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
+}
 
 
 
+      //Fetch Data and Initialization
+    fetchData().then(products => {
+        console.log(products);
+        populateCategories(products);
+        filterAndPaginate();
+        displayProducts(products);
+        filterProducts(); 
+    });
+  
 
     //Display Products Page
     function displayProductsPage(products) {
@@ -103,16 +113,12 @@ function displayProductInfo(product) {
 }
 
 
-      //Fetch Data and Initialization
-    fetchData().then(products => {
-        console.log(products);
-        populateCategories(products);
-        filterAndPaginate();
-        displayProducts(products);
-        filterProducts(); 
-    });
-  
     
+    
+
+    
+
+
 
 // Open Full Size Image
 function openFullSizeImage(imageUrl) {
@@ -122,9 +128,6 @@ function openFullSizeImage(imageUrl) {
     
     
 
-    
-    
-    
 //Search and Category Filter
     function filterAndPaginate() {
         filterProducts();
@@ -165,36 +168,33 @@ function filterProducts() {
     }
 
 
-    //Fetch Data and Initialization
-    fetchData().then(products => {
-        console.log(products);
-        populateCategories(products);
-        filterAndPaginate();
-        displayProducts(products);
-        filterProducts(); 
-    });
 
 
 
     //Update Pagination
-    function updatePagination(products) {
-        const totalPages = Math.ceil(products.length / productsPerPage);
+function updatePagination(products) {
+    const totalPages = Math.ceil(products.length / productsPerPage);
 
     let paginationHTML = '';
     for (let i = 1; i <= totalPages; i++) {
-        paginationHTML += `<button>${i}</button>`;
+        const isActive = i === currentPage;
+        paginationHTML += `<button class="${isActive ? 'active' : ''}" data-page="${i}">${i}</button>`;
     }
 
     paginationContainer.innerHTML = paginationHTML;
 
     const paginationButtons = paginationContainer.querySelectorAll('button');
-    paginationButtons.forEach((button, index) => {
+    paginationButtons.forEach((button) => {
         button.addEventListener('click', () => {
-            currentPage = index + 1;
+            currentPage = parseInt(button.getAttribute('data-page'));
             displayProductsPage(products);
+            updatePagination(products); // Update pagination to highlight the active page
         });
     });
-    }
+}
+
+
+
     
 searchInput.addEventListener('input', () => {
     filterProducts();
@@ -207,7 +207,7 @@ categorySelect.addEventListener('change', () => {
     
     
     
-
+//Additional Event Listeners
     searchInput.addEventListener('input', filterAndPaginate);
     categorySelect.addEventListener('change', filterAndPaginate);
     productInfoContent.addEventListener('click', event => event.stopPropagation());
